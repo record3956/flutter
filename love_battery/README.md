@@ -31,5 +31,10 @@ UI / 기능
 # history
 
     2023-05-22
-    -  기획안 작성 
+    - 기획안 작성 
     - UI TOP/Body/BOT 파일로 구분 및 top.dart 내 dDay 구하는 메서드 구현
+
+    2023-05-23
+    - 사용자에게 NextMeet 관련 정보를 받을 textField 구성 완료
+    - TextField 내부 메서드 구현 완료
+    - 추후 데이터 저장 관리 예정
