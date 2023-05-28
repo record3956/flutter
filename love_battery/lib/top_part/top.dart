@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:love_battery/top_part/top_part_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TopPart extends StatefulWidget {
   const TopPart({super.key});
@@ -9,13 +10,12 @@ class TopPart extends StatefulWidget {
 }
 
 class _TopPartState extends State<TopPart> {
+  // sharedPreference 패키지를 이용한 디스크 접근 변수
+  final Future<SharedPreferences> _pref = SharedPreferences.getInstance();
   // 1.getFirstDay 함수에 사용될 변수 선언
-  // 추후 입력값으로 저장될 firstSelectedDate3
-  // 입력값 존재 유무를 판단할 bool 변수 true 변경되게 할 것
+  // 처음 만난 날로 사용될 firstDay
   // 결과값인 dDay변수
-  late DateTime? firstSelectedDate;
-  late String firstMeetToString;
-  bool isFirstData = false;
+  late String firstDay;
   late int dDay;
   // 2.getNextMeet 함수에 사용될 변수 선언
   // textField 조작을 위한 컨트롤러
@@ -28,6 +28,12 @@ class _TopPartState extends State<TopPart> {
   late String nextMeetToString;
   late int nextDday;
   bool isNextDialog = false;
+// 데이터 저장값 유무를 확인하는 함수
+
+  isItInfo() async {
+    final SharedPreferences prefs = await _pref;
+    prefs.getString('firstDay');
+  }
 
   @override
   void initState() {
@@ -37,23 +43,23 @@ class _TopPartState extends State<TopPart> {
     super.initState();
   }
 
-  // 입력 날짜를 기준으로 며칠 만났는지를 반환하는 함수
-  Future<int?> getFirstDay() async {
-    firstSelectedDate = await showDatePicker(
+  // 입력 날짜를 기준으로 며칠 만났는지를 반환하고 디스크에 값을 저장하는 함수
+  getFristDay() async {
+    DateTime? selectedFirstDay = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
     );
-    if (firstSelectedDate != null) {
+    final SharedPreferences prefs = await _pref;
+    if (selectedFirstDay != null) {
       setState(() {
-        isFirstData = !isFirstData;
-        dDay = DateTime.now().difference(firstSelectedDate!).inDays + 1;
-        firstMeetToString =
-            '${firstSelectedDate!.year} - ${firstSelectedDate!.month} - ${firstSelectedDate!.day}';
+        firstDay =
+            '${selectedFirstDay.year}-${selectedFirstDay.month}-${selectedFirstDay.day}-';
+        // firstDay값을 메모리에 "firstDay" 키 값으로 저장한다.
+        prefs.setString('firstDay', firstDay);
       });
     }
-    return null;
   }
 
   //
@@ -142,7 +148,7 @@ class _TopPartState extends State<TopPart> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        isFirstData
+        (firstDay == 'no Date')
             ? Stack(
                 alignment: Alignment.center,
                 children: [
@@ -153,7 +159,7 @@ class _TopPartState extends State<TopPart> {
                           context: context,
                           builder: (context) => AlertDialog(
                             content: SameSizedBox(
-                                child: Text('since $firstMeetToString ~ing')),
+                                child: Text('since $firstDay ~ing')),
                           ),
                         );
                       },
@@ -173,7 +179,7 @@ class _TopPartState extends State<TopPart> {
               )
             : SameSizedBox(
                 child: GestureDetector(
-                  onTap: getFirstDay,
+                  onTap: getFristDay,
                   child: Icon(Icons.question_mark),
                 ),
               ),

@@ -38,3 +38,8 @@ UI / 기능
     - 사용자에게 NextMeet 관련 정보를 받을 textField 구성 완료
     - TextField 내부 메서드 구현 완료
     - 추후 데이터 저장 관리 예정
+
+    2023-05-26
+    - 사용자 입력값을 저장하기 위한 shared preferences 패키지 사용방법 구상.
+    - 저장 값 : 처음 만난 날짜, Map[다음 데이트(언제,어디서,무엇을)], => List<Map<String , String>> date 
+    - 처음 만난 날짜 저장.
