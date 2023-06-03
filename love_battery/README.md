@@ -43,3 +43,7 @@ UI / 기능
     - 사용자 입력값을 저장하기 위한 shared preferences 패키지 사용방법 구상.
     - 저장 값 : 처음 만난 날짜, Map[다음 데이트(언제,어디서,무엇을)], => List<Map<String , String>> date 
     - 처음 만난 날짜 저장.
+
+    2023-06-02
+    - 저장소 값 dDay , firstDay 저장 완료
+    - Provider 이슈 발생 원인 파악필요

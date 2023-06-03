@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:love_battery/provider/provider.dart';
 import 'package:love_battery/top_part/top_part_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TopPart extends StatefulWidget {
-  const TopPart({super.key});
+  final String firstDay;
+  final int dDay;
+  TopPart({super.key, required this.firstDay, required this.dDay});
 
   @override
   State<TopPart> createState() => _TopPartState();
@@ -28,12 +32,9 @@ class _TopPartState extends State<TopPart> {
   late String nextMeetToString;
   late int nextDday;
   bool isNextDialog = false;
-// 데이터 저장값 유무를 확인하는 함수
 
-  isItInfo() async {
-    final SharedPreferences prefs = await _pref;
-    prefs.getString('firstDay');
-  }
+// 데이터 저장값 유무를 확인하고
+// 앱을 시작 했을 때 데이터가 없다면 setString firstDay = "no Date"로 하는 메서드
 
   @override
   void initState() {
@@ -41,6 +42,9 @@ class _TopPartState extends State<TopPart> {
     nextMeetWhereController = TextEditingController();
     nextMeetWhatController = TextEditingController();
     super.initState();
+    firstDay = widget.firstDay;
+    dDay = widget.dDay;
+    print(firstDay);
   }
 
   // 입력 날짜를 기준으로 며칠 만났는지를 반환하고 디스크에 값을 저장하는 함수
@@ -55,9 +59,10 @@ class _TopPartState extends State<TopPart> {
     if (selectedFirstDay != null) {
       setState(() {
         firstDay =
-            '${selectedFirstDay.year}-${selectedFirstDay.month}-${selectedFirstDay.day}-';
-        // firstDay값을 메모리에 "firstDay" 키 값으로 저장한다.
+            "${selectedFirstDay.year}-${selectedFirstDay.month}-${selectedFirstDay.day}";
         prefs.setString('firstDay', firstDay);
+        dDay = DateTime.now().difference(selectedFirstDay).inDays + 1;
+        prefs.setInt('dDay', dDay);
       });
     }
   }
@@ -145,10 +150,12 @@ class _TopPartState extends State<TopPart> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<FirstDate>(context).firstDay = widget.firstDay;
+    firstDay = Provider.of<FirstDate>(context).firstDay;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        (firstDay == 'no Date')
+        (firstDay != 'no Date')
             ? Stack(
                 alignment: Alignment.center,
                 children: [
