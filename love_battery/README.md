@@ -47,3 +47,25 @@ UI / 기능
     2023-06-02
     - 저장소 값 dDay , firstDay 저장 완료
     - Provider 이슈 발생 원인 파악필요
+---------------------------------------------
+    2023-06-19
+    - 프로젝트 재기획 : 
+    초기 기획안 notion : https://www.notion.so/battery-f82cc7636c864be4b5b4a1b4deae796a?pvs=4
+    - firebase 초기 구성 android gradle 수정
+
+    2023-06-20
+    - firebase 연동 이슈 발생  (activate flutterfire_cli 관련) => dart SDK 환경 변수 등록으로 해결
+
+    2023-06-21
+    - firebase 연동 이슈 발생  (flutterfire configure 관련) => git 설치 및 환경 변수 등록으로 해결
+    
+    2023-06-22
+    - firebase RealTimeDB구성하는 방법 공부
+    - firebase auth 관련 구글 로그인 기능 확인
+    - 프로젝트 재기획 : 
+    수정 기획안 notion : https://romantic-sort-239.notion.site/23-06-22-fc5ba0ce52424055bcacb0158d2d7982?pvs=4
+    
+    2023-06-23
+    want to do
+    - firebase_auth 패키지
+    - google_login 패키지를 통해

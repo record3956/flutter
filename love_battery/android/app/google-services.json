@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "699498852734",
+    "firebase_url": "https://dev-app-cb2ba-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "dev-app-cb2ba",
+    "storage_bucket": "dev-app-cb2ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699498852734:android:3ac1e9769aa3bc603b832f",
+        "android_client_info": {
+          "package_name": "com.example.love_battery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699498852734-hed2uorrb7i5lutmp7rbtl76dhkka4pf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.love_battery",
+            "certificate_hash": "51feed752e2339cb63fc2bd159a0237aee42a891"
+          }
+        },
+        {
+          "client_id": "699498852734-4pi0tu9k3tb7b2enq2tq81oska4hl2l0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxBPPR3gt1jz4tYSOXzphemdrolsRzrTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699498852734-4pi0tu9k3tb7b2enq2tq81oska4hl2l0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "699498852734-bjf75iq6eeig1annj16qpp1l36nu8v02.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.loveBattery"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
