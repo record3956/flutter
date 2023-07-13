@@ -31,6 +31,7 @@ class Message extends StatelessWidget {
               isMe: chatDocs[index]['userID'].toString() == user!.uid,
               message: chatDocs[index]['text'],
               userName: chatDocs[index]['userName'],
+              userImage: chatDocs[index]['userImage'],
             );
           },
         );

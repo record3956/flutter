@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:chat_app_with_firebase/add_Image/add_image.dart';
 import 'package:chat_app_with_firebase/pallet/pallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -19,7 +22,11 @@ class _SignInAndUpScreenState extends State<SignInAndUpScreen> {
   String userName = '';
   String userEmail = '';
   String userPwd = '';
+  File? userPickedImage;
   final _formKey = GlobalKey<FormState>();
+  void pickedImage(File image) {
+    userPickedImage = image;
+  }
 
   // 입력폼을 활용해 입력값을 받기 위한 메서드
   void tryVali() {
@@ -35,9 +42,9 @@ class _SignInAndUpScreenState extends State<SignInAndUpScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return const Dialog(
+        return Dialog(
           backgroundColor: Colors.white,
-          child: AddImage(),
+          child: AddImage(addImageFunc: pickedImage),
         );
       },
     );
@@ -530,11 +537,29 @@ class _SignInAndUpScreenState extends State<SignInAndUpScreen> {
                         showSpinner = true;
                       });
                       if (isSignUP) {
+                        if (userPickedImage == null) {
+                          setState(() {
+                            showSpinner == false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('please check your profile image'),
+                              backgroundColor: Colors.blue,
+                            ),
+                          );
+                          return;
+                        }
                         tryVali();
                         try {
                           final newUser = await authentication
                               .createUserWithEmailAndPassword(
                                   email: userEmail, password: userPwd);
+                          final refImage = FirebaseStorage.instance
+                              .ref()
+                              .child('picked_image')
+                              .child('${newUser.user!.uid}.png');
+                          await refImage.putFile(userPickedImage!);
+                          final url = await refImage.getDownloadURL();
                           await FirebaseFirestore.instance
                               .collection('user')
                               .doc(newUser.user!.uid)
@@ -542,6 +567,7 @@ class _SignInAndUpScreenState extends State<SignInAndUpScreen> {
                             {
                               'userName': userName,
                               'userEmail': userEmail,
+                              'picked_image': url,
                             },
                           );
                           setState(
@@ -579,23 +605,26 @@ class _SignInAndUpScreenState extends State<SignInAndUpScreen> {
                           });
                         } catch (e) {
                           print(e);
-                          await Future.delayed(
-                            const Duration(seconds: 3),
-                            () {
-                              return ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'please check your Email and Password'),
-                                  backgroundColor: Colors.blue,
-                                ),
-                              );
-                            },
-                          );
-                          setState(
-                            () {
-                              showSpinner = false;
-                            },
-                          );
+                          if (mounted) {
+                            await Future.delayed(
+                              const Duration(seconds: 3),
+                              () {
+                                return ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'please check your Email and Password'),
+                                    backgroundColor: Colors.blue,
+                                  ),
+                                );
+                              },
+                            );
+                            setState(
+                              () {
+                                showSpinner = false;
+                              },
+                            );
+                          }
                         }
                       }
                     },
